@@ -87,16 +87,18 @@ final class ModelLoader {
 
     // MARK: - Load Model
 
-    /// 加载 DAE / SCN / GLB / FBX 文件
+    /// 加载 DAE / SCN / GLB 文件
     /// - Parameter fileName: 文件名（不含扩展名），默认 "THIN_WELD_DECIMATED_new"
-    /// - Parameter ext: 扩展名，默认 "glb"（Mixamo 转换后格式）
+    /// - Parameter ext: 扩展名，默认 "scn"（CI 构建时将 GLB 转为 SCN）
     /// - Returns: ModelLoadResult，失败返回 nil
     static func load(named fileName: String = "THIN_WELD_DECIMATED_new",
-                     extension ext: String = "glb") -> ModelLoadResult? {
+                     extension ext: String = "scn") -> ModelLoadResult? {
 
         var loadedScene: SCNScene?
 
-        // ── 优先尝试 GLB (glTF binary) ──
+        // ── 尝试加载：SCN > DAE > GLB ──
+        // SCN 是 SceneKit 原生格式，最快最可靠
+        // GLB 仅在构建时被 CI 转为 SCN，iOS 上作为 fallback（通过 MDLAsset）
         if ext == "glb" || ext == "gltf" {
             if let url = Bundle.main.url(forResource: fileName, withExtension: ext) {
                 loadedScene = loadGLBAsset(url: url)
@@ -117,15 +119,13 @@ final class ModelLoader {
 
             for (name, ex) in possibleNames {
                 if let url = Bundle.main.url(forResource: name, withExtension: ex) {
-                    do {
-                        loadedScene = try SCNScene(url: url, options: [
-                            .checkConsistency: true,
-                            .flattenSceneHierarchy: false
-                        ])
+                    loadedScene = SCNScene(url: url, options: [
+                        .checkConsistency: true,
+                        .flattenSceneHierarchy: false
+                    ])
+                    if loadedScene != nil {
                         print("[ModelLoader] 成功加载: \(name).\(ex)")
                         break
-                    } catch {
-                        print("[ModelLoader] 加载失败 (\(name).\(ex)): \(error.localizedDescription)")
                     }
                 }
 

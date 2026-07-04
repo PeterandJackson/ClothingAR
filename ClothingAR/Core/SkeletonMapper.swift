@@ -63,31 +63,31 @@ final class SkeletonMapper {
     /// 骨骼定义表（T-Pose 参考方向）
     let boneDefinitions: [BoneDefinition] = [
         // 躯干
-        BoneDefinition(name: "hips",      parent: nil,              restDirection: [0,  1,  0], expectedLength: 0.00),
-        BoneDefinition(name: "spine",     parent: "hips",           restDirection: [0,  1,  0], expectedLength: 0.20),
-        BoneDefinition(name: "spine1",    parent: "spine",          restDirection: [0,  1,  0], expectedLength: 0.15),
-        BoneDefinition(name: "spine2",    parent: "spine1",         restDirection: [0,  1,  0], expectedLength: 0.15),
-        BoneDefinition(name: "neck",      parent: "spine2",         restDirection: [0,  1,  0], expectedLength: 0.08),
+        BoneDefinition(name: "hips",      parent: nil,              restDirection: SIMD3<Float>(0,  1,  0), expectedLength: 0.00),
+        BoneDefinition(name: "spine",     parent: "hips",           restDirection: SIMD3<Float>(0,  1,  0), expectedLength: 0.20),
+        BoneDefinition(name: "spine1",    parent: "spine",          restDirection: SIMD3<Float>(0,  1,  0), expectedLength: 0.15),
+        BoneDefinition(name: "spine2",    parent: "spine1",         restDirection: SIMD3<Float>(0,  1,  0), expectedLength: 0.15),
+        BoneDefinition(name: "neck",      parent: "spine2",         restDirection: SIMD3<Float>(0,  1,  0), expectedLength: 0.08),
 
         // 左臂
-        BoneDefinition(name: "left_shoulder", parent: "spine2",    restDirection: [-1,  0,  0], expectedLength: 0.18),
-        BoneDefinition(name: "left_elbow",    parent: "left_shoulder", restDirection: [-1,  0,  0], expectedLength: 0.30),
-        BoneDefinition(name: "left_wrist",    parent: "left_elbow",    restDirection: [-1,  0,  0], expectedLength: 0.26),
+        BoneDefinition(name: "left_shoulder", parent: "spine2",    restDirection: SIMD3<Float>(-1,  0,  0), expectedLength: 0.18),
+        BoneDefinition(name: "left_elbow",    parent: "left_shoulder", restDirection: SIMD3<Float>(-1,  0,  0), expectedLength: 0.30),
+        BoneDefinition(name: "left_wrist",    parent: "left_elbow",    restDirection: SIMD3<Float>(-1,  0,  0), expectedLength: 0.26),
 
         // 右臂
-        BoneDefinition(name: "right_shoulder", parent: "spine2",   restDirection: [ 1,  0,  0], expectedLength: 0.18),
-        BoneDefinition(name: "right_elbow",    parent: "right_shoulder", restDirection: [ 1,  0,  0], expectedLength: 0.30),
-        BoneDefinition(name: "right_wrist",    parent: "right_elbow",    restDirection: [ 1,  0,  0], expectedLength: 0.26),
+        BoneDefinition(name: "right_shoulder", parent: "spine2",   restDirection: SIMD3<Float>( 1,  0,  0), expectedLength: 0.18),
+        BoneDefinition(name: "right_elbow",    parent: "right_shoulder", restDirection: SIMD3<Float>( 1,  0,  0), expectedLength: 0.30),
+        BoneDefinition(name: "right_wrist",    parent: "right_elbow",    restDirection: SIMD3<Float>( 1,  0,  0), expectedLength: 0.26),
 
         // 左腿
-        BoneDefinition(name: "left_hip",    parent: "hips",        restDirection: [-0.1, -1,  0], expectedLength: 0.12),
-        BoneDefinition(name: "left_knee",   parent: "left_hip",    restDirection: [ 0,  -1,  0], expectedLength: 0.42),
-        BoneDefinition(name: "left_ankle",  parent: "left_knee",   restDirection: [ 0,  -1,  0], expectedLength: 0.40),
+        BoneDefinition(name: "left_hip",    parent: "hips",        restDirection: SIMD3<Float>(-0.1, -1,  0), expectedLength: 0.12),
+        BoneDefinition(name: "left_knee",   parent: "left_hip",    restDirection: SIMD3<Float>( 0,  -1,  0), expectedLength: 0.42),
+        BoneDefinition(name: "left_ankle",  parent: "left_knee",   restDirection: SIMD3<Float>( 0,  -1,  0), expectedLength: 0.40),
 
         // 右腿
-        BoneDefinition(name: "right_hip",   parent: "hips",        restDirection: [ 0.1, -1,  0], expectedLength: 0.12),
-        BoneDefinition(name: "right_knee",  parent: "right_hip",   restDirection: [ 0,  -1,  0], expectedLength: 0.42),
-        BoneDefinition(name: "right_ankle", parent: "right_knee",  restDirection: [ 0,  -1,  0], expectedLength: 0.40),
+        BoneDefinition(name: "right_hip",   parent: "hips",        restDirection: SIMD3<Float>( 0.1, -1,  0), expectedLength: 0.12),
+        BoneDefinition(name: "right_knee",  parent: "right_hip",   restDirection: SIMD3<Float>( 0,  -1,  0), expectedLength: 0.42),
+        BoneDefinition(name: "right_ankle", parent: "right_knee",  restDirection: SIMD3<Float>( 0,  -1,  0), expectedLength: 0.40),
     ]
 
     // MARK: - Private State

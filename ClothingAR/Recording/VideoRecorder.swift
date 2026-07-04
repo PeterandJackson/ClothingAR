@@ -218,7 +218,7 @@ final class VideoRecorder {
         var newBuffer: CMSampleBuffer?
         let status = CMSampleBufferCreateCopyWithNewTiming(
             allocator: kCFAllocatorDefault,
-            sampleBuffer: buffer,
+            originalSampleBuffer: buffer,
             sampleTimingEntryCount: 1,
             sampleTimingArray: &timingInfo,
             sampleBufferOut: &newBuffer

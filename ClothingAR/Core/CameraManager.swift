@@ -183,8 +183,11 @@ final class CameraManager: NSObject {
     func enableAudio() {
         guard audioOutput == nil else { return }
         requestMicrophonePermission { [weak self] granted in
-            guard let self, granted else {
-                self?.delegate?.cameraManager(self!, didFailWithPermission: .microphone)
+            guard let self else {
+                return // self 已释放，无需处理
+            }
+            guard granted else {
+                self.delegate?.cameraManager(self, didFailWithPermission: .microphone)
                 return
             }
             self.addAudioOutput()

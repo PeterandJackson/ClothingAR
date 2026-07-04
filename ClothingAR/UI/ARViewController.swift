@@ -175,8 +175,9 @@ final class ARViewController: UIViewController {
         DispatchQueue.global(qos: .userInitiated).async { [weak self] in
             guard let self else { return }
 
-            // 加载 Mixamo 绑骨后的 GLB 文件
-            guard let result = ModelLoader.load(named: "THIN_WELD_DECIMATED_new", extension: "glb") else {
+            // 加载模型：优先 SCN（CI 构建时转换），fallback GLB
+            guard let result = ModelLoader.load(named: "THIN_WELD_DECIMATED_new", extension: "scn")
+               ?? ModelLoader.load(named: "THIN_WELD_DECIMATED_new", extension: "glb") else {
                 DispatchQueue.main.async {
                     self.showModelLoadError()
                 }
@@ -315,6 +316,43 @@ extension ARViewController: SCNSceneRendererDelegate {
     func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
         // 每帧在主线程执行：应用所有待处理的缓冲数据
         sceneRenderer.applyPendingUpdates()
+
+        // 录制时捕获渲染结果
+        if isRecording, let recorder = videoRecorder as VideoRecorder?, recorder.isRecording {
+            let snapshot = sceneRenderer.scnView.snapshot()
+            if let pixelBuffer = imageToPixelBuffer(snapshot) {
+                let timestamp = CMTime(seconds: CACurrentMediaTime(), preferredTimescale: 600)
+                recorder.appendVideo(pixelBuffer: pixelBuffer, timestamp: timestamp)
+            }
+        }
+    }
+
+    /// UIImage → CVPixelBuffer 快速转换
+    private func imageToPixelBuffer(_ image: UIImage) -> CVPixelBuffer? {
+        let size = image.size
+        var pixelBuffer: CVPixelBuffer?
+        let attrs: [String: Any] = [
+            kCVPixelBufferCGImageCompatibilityKey as String: true,
+            kCVPixelBufferCGBitmapContextCompatibilityKey as String: true,
+            kCVPixelBufferPixelFormatTypeKey as String: kCVPixelFormatType_32BGRA,
+            kCVPixelBufferWidthKey as String: Int(size.width),
+            kCVPixelBufferHeightKey as String: Int(size.height),
+        ]
+        CVPixelBufferCreate(kCFAllocatorDefault, Int(size.width), Int(size.height),
+                            kCVPixelFormatType_32BGRA, attrs as CFDictionary, &pixelBuffer)
+        guard let pb = pixelBuffer else { return nil }
+
+        CVPixelBufferLockBaseAddress(pb, [])
+        defer { CVPixelBufferUnlockBaseAddress(pb, []) }
+        let context = CGContext(data: CVPixelBufferGetBaseAddress(pb),
+                                 width: Int(size.width), height: Int(size.height),
+                                 bitsPerComponent: 8, bytesPerRow: CVPixelBufferGetBytesPerRow(pb),
+                                 space: CGColorSpaceCreateDeviceRGB(),
+                                 bitmapInfo: CGImageAlphaInfo.premultipliedFirst.rawValue | CGBitmapInfo.byteOrder32Little.rawValue)
+        UIGraphicsPushContext(context!)
+        image.draw(in: CGRect(origin: .zero, size: size))
+        UIGraphicsPopContext()
+        return pb
     }
 }
 

@@ -115,7 +115,7 @@ final class BodyTracker {
         let bodyData = BodyJointData(
             points: smoothedPoints,
             confidences: confidences,
-            boundingBox: boundingBox.boundingBox,
+            boundingBox: boundingBox,
             timestamp: timestamp
         )
 

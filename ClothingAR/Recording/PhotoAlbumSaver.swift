@@ -45,7 +45,8 @@ final class PhotoAlbumSaver {
 
     private static func performSave(url: URL, completion: @escaping (Bool, String?) -> Void) {
         PHPhotoLibrary.shared().performChanges({
-            PHAssetCreationRequest.addResource(with: .video, fileURL: url)
+            let request = PHAssetCreationRequest.forAsset()
+            request.addResource(with: .video, fileURL: url, options: nil)
         }) { success, error in
             DispatchQueue.main.async {
                 if success {
