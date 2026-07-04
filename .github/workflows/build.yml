@@ -9,25 +9,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: sudo xcode-select -s /Applications/Xcode_15.4.app
-
-      - name: Convert GLB to SCN
-        run: |
-          swift - <<'EOF'
-          import ModelIO
-          import SceneKit
-          let glb = "ClothingAR/Resources/Models/THIN_WELD_DECIMATED_new.glb"
-          let scn = "ClothingAR/Resources/Models/THIN_WELD_DECIMATED_new.scn"
-          guard FileManager.default.fileExists(atPath: glb) else { print("No GLB, skip"); exit(0) }
-          let a = MDLAsset(url: URL(fileURLWithPath: glb))
-          guard a.count > 0 else { print("GLB load failed"); exit(1) }
-          let s = SCNScene(mdlAsset: a)
-          s.write(to: URL(fileURLWithPath: scn), options: nil, delegate: nil, progressHandler: nil)
-          print("GLB -> SCN OK")
-          EOF
-
       - run: python3 gen_pbxproj.py
 
-      - name: Archive
+      - name: Archive (unsigned)
         run: |
           xcodebuild archive \
             -project ClothingAR.xcodeproj \
@@ -48,6 +32,7 @@ jobs:
           cp -R ClothingAR.xcarchive/Products/Applications/ClothingAR.app Payload/
           zip -r -y ClothingAR-unsigned.ipa Payload
           rm -rf Payload
+          echo "IPA built"
 
       - uses: actions/upload-artifact@v4
         with:
