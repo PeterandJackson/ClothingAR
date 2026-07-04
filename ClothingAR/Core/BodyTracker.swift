@@ -79,10 +79,17 @@ final class BodyTracker {
             return
         }
 
-        // ── 取 boundingBox 最大的人（有多个人的情况） ──
-        // VNDetectHumanBodyPoseRequest 默认返回多人结果，这里用 request.results
-        // results 已按 confidence 排序，取第一个即可
-        let boundingBox = observation.boundingBox
+        // 从关键点计算 boundingBox（VNHumanBodyPoseObservation在Xcode15.4没有直接暴露boundingBox）
+        var minX: CGFloat = 1, minY: CGFloat = 1, maxX: CGFloat = 0, maxY: CGFloat = 0
+        // 先粗略扫描一次算包围盒
+        let allJointsTemp: [VNHumanBodyPoseObservation.JointName] = [.root, .neck, .leftShoulder, .rightShoulder, .leftHip, .rightHip]
+        for joint in allJointsTemp {
+            if let pt = try? observation.recognizedPoint(joint), pt.confidence > confidenceThreshold {
+                minX = min(minX, pt.location.x); maxX = max(maxX, pt.location.x)
+                minY = min(minY, pt.location.y); maxY = max(maxY, pt.location.y)
+            }
+        }
+        let boundingBox = CGRect(x: minX, y: minY, width: maxX - minX, height: maxY - minY)
 
         // ── 提取关键点 ──
         var points: [VNHumanBodyPoseObservation.JointName: CGPoint] = [:]
