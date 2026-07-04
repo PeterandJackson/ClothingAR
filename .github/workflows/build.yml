@@ -30,6 +30,9 @@ jobs:
         run: |
           mkdir -p Payload
           cp -R ClothingAR.xcarchive/Products/Applications/ClothingAR.app Payload/
+          # Copy GLB model into app bundle
+          mkdir -p "Payload/ClothingAR.app/Resources/Models"
+          cp ClothingAR/Resources/Models/THIN_WELD_DECIMATED_new.glb "Payload/ClothingAR.app/Resources/Models/"
           zip -r -y ClothingAR-unsigned.ipa Payload
           rm -rf Payload
           echo "IPA built"
