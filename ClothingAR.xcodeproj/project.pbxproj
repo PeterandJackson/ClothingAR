@@ -1,0 +1,284 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0000000000000000000F4241 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0000000000000000001E8481 /* AppDelegate.swift */; };
+		0000000000000000000F4242 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0000000000000000001E8482 /* SceneDelegate.swift */; };
+		0000000000000000000F4243 /* CameraManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0000000000000000001E8483 /* CameraManager.swift */; };
+		0000000000000000000F4244 /* BodyTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0000000000000000001E8484 /* BodyTracker.swift */; };
+		0000000000000000000F4245 /* SkeletonMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0000000000000000001E8485 /* SkeletonMapper.swift */; };
+		0000000000000000000F4246 /* PersonSegmentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0000000000000000001E8486 /* PersonSegmentation.swift */; };
+		0000000000000000000F4247 /* SceneRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0000000000000000001E8487 /* SceneRenderer.swift */; };
+		0000000000000000000F4248 /* ModelLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0000000000000000001E8488 /* ModelLoader.swift */; };
+		0000000000000000000F4249 /* ModelCalibration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0000000000000000001E8489 /* ModelCalibration.swift */; };
+		0000000000000000000F424A /* VideoRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0000000000000000001E848A /* VideoRecorder.swift */; };
+		0000000000000000000F424B /* PhotoAlbumSaver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0000000000000000001E848B /* PhotoAlbumSaver.swift */; };
+		0000000000000000000F424C /* ARViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0000000000000000001E848C /* ARViewController.swift */; };
+		0000000000000000000F424D /* RecordButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0000000000000000001E848D /* RecordButton.swift */; };
+		0000000000000000000F424E /* StatusIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0000000000000000001E848E /* StatusIndicator.swift */; };
+		0000000000000000000F424F /* PerformanceMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0000000000000000001E848F /* PerformanceMonitor.swift */; };
+		0000000000000000000F4250 /* QualityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0000000000000000001E8490 /* QualityManager.swift */; };
+		0000000000000000000F4252 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0000000000000000001E8492 /* Assets.xcassets */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		0000000000000000001E8481 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		0000000000000000001E8482 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		0000000000000000001E8483 /* CameraManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraManager.swift; sourceTree = "<group>"; };
+		0000000000000000001E8484 /* BodyTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BodyTracker.swift; sourceTree = "<group>"; };
+		0000000000000000001E8485 /* SkeletonMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkeletonMapper.swift; sourceTree = "<group>"; };
+		0000000000000000001E8486 /* PersonSegmentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonSegmentation.swift; sourceTree = "<group>"; };
+		0000000000000000001E8487 /* SceneRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneRenderer.swift; sourceTree = "<group>"; };
+		0000000000000000001E8488 /* ModelLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelLoader.swift; sourceTree = "<group>"; };
+		0000000000000000001E8489 /* ModelCalibration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelCalibration.swift; sourceTree = "<group>"; };
+		0000000000000000001E848A /* VideoRecorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoRecorder.swift; sourceTree = "<group>"; };
+		0000000000000000001E848B /* PhotoAlbumSaver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoAlbumSaver.swift; sourceTree = "<group>"; };
+		0000000000000000001E848C /* ARViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARViewController.swift; sourceTree = "<group>"; };
+		0000000000000000001E848D /* RecordButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordButton.swift; sourceTree = "<group>"; };
+		0000000000000000001E848E /* StatusIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusIndicator.swift; sourceTree = "<group>"; };
+		0000000000000000001E848F /* PerformanceMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformanceMonitor.swift; sourceTree = "<group>"; };
+		0000000000000000001E8490 /* QualityManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QualityManager.swift; sourceTree = "<group>"; };
+		0000000000000000001E8491 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0000000000000000001E8492 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		0000000000000000002DC6BF /* ClothingAR.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ClothingAR.app; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		0000000000000000002DC6C1 /* Frameworks */ = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		0000000000000000003D0901 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				0000000000000000001E8481,
+				0000000000000000001E8482,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		0000000000000000003D0902 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				0000000000000000001E8483,
+				0000000000000000001E8484,
+				0000000000000000001E8485,
+				0000000000000000001E8486,
+				0000000000000000001E8487,
+				0000000000000000001E8488,
+				0000000000000000001E8489,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		0000000000000000003D0903 /* Recording */ = {
+			isa = PBXGroup;
+			children = (
+				0000000000000000001E848A,
+				0000000000000000001E848B,
+			);
+			path = Recording;
+			sourceTree = "<group>";
+		};
+		0000000000000000003D0904 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				0000000000000000001E848C,
+				0000000000000000001E848D,
+				0000000000000000001E848E,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
+		0000000000000000003D0905 /* Performance */ = {
+			isa = PBXGroup;
+			children = (
+				0000000000000000001E848F,
+				0000000000000000001E8490,
+			);
+			path = Performance;
+			sourceTree = "<group>";
+		};
+		0000000000000000003D0906 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				0000000000000000001E8491,
+				0000000000000000001E8492,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		0000000000000000003D0907 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				0000000000000000002DC6BF,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		0000000000000000003D0900 /*  */ = {
+			isa = PBXGroup;
+			children = (
+				0000000000000000003D0901,
+				0000000000000000003D0902,
+				0000000000000000003D0903,
+				0000000000000000003D0904,
+				0000000000000000003D0905,
+				0000000000000000003D0906,
+				0000000000000000003D0907,
+			);
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		0000000000000000004C4B41 /* ClothingAR */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0000000000000000007A1202 /* BCL */;
+			buildPhases = (
+				0000000000000000005B8D81 /* Sources */,
+				0000000000000000002DC6C1 /* Frameworks */,
+				0000000000000000006ACFC1 /* Resources */,
+			);
+			buildRules = ();
+			dependencies = ();
+			name = ClothingAR;
+			productName = ClothingAR;
+			productReference = 0000000000000000002DC6BF;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		000000000000000000895441 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1520;
+				LastUpgradeCheck = 1520;
+				TargetAttributes = {
+					0000000000000000004C4B41 = {CreatedOnToolsVersion = 15.2; };
+				};
+			};
+			buildConfigurationList = 0000000000000000007A1201;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = "zh-Hans";
+			hasScannedForEncodings = 0;
+			knownRegions = (en, "zh-Hans", Base);
+			mainGroup = 0000000000000000003D0900;
+			productRefGroup = 0000000000000000003D0907;
+			projectDirPath = "ClothingAR";
+			projectRoot = "";
+			targets = (
+				0000000000000000004C4B41 /* ClothingAR */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		0000000000000000006ACFC1 /* Resources */ = {isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (0000000000000000000F4252 /* Assets.xcassets in Resources */,); runOnlyForDeploymentPostprocessing = 0; };
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		0000000000000000005B8D81 /* Sources */ = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (
+				0000000000000000000F4241 /* AppDelegate.swift in Sources */,
+				0000000000000000000F4242 /* SceneDelegate.swift in Sources */,
+				0000000000000000000F4243 /* CameraManager.swift in Sources */,
+				0000000000000000000F4244 /* BodyTracker.swift in Sources */,
+				0000000000000000000F4245 /* SkeletonMapper.swift in Sources */,
+				0000000000000000000F4246 /* PersonSegmentation.swift in Sources */,
+				0000000000000000000F4247 /* SceneRenderer.swift in Sources */,
+				0000000000000000000F4248 /* ModelLoader.swift in Sources */,
+				0000000000000000000F4249 /* ModelCalibration.swift in Sources */,
+				0000000000000000000F424A /* VideoRecorder.swift in Sources */,
+				0000000000000000000F424B /* PhotoAlbumSaver.swift in Sources */,
+				0000000000000000000F424C /* ARViewController.swift in Sources */,
+				0000000000000000000F424D /* RecordButton.swift in Sources */,
+				0000000000000000000F424E /* StatusIndicator.swift in Sources */,
+				0000000000000000000F424F /* PerformanceMonitor.swift in Sources */,
+				0000000000000000000F4250 /* QualityManager.swift in Sources */,
+			); runOnlyForDeploymentPostprocessing = 0; }};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		000000000000000000A7D8C1 /* Debug */ = {isa = XCBuildConfiguration; buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				SDKROOT = iphoneos;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				ONLY_ACTIVE_ARCH = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug; };
+		000000000000000000A7D8C2 /* Release */ = {isa = XCBuildConfiguration; buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				SDKROOT = iphoneos;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_OPTIMIZATION_LEVEL = s;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+			};
+			name = Release; };
+		000000000000000000A7D8C3 /* Debug */ = {isa = XCBuildConfiguration; buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				INFOPLIST_FILE = Info.plist;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.clothingar.app;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				LD_RUNPATH_SEARCH_PATHS = ("$(inherited)","@executable_path/Frameworks");
+				INFOPLIST_KEY_NSCameraUsageDescription = "ClothingAR 需要使用相机";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "ClothingAR 需要使用麦克风";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "ClothingAR 需要保存视频";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UIStatusBarHidden = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+			};
+			name = Debug; };
+		000000000000000000A7D8C4 /* Release */ = {isa = XCBuildConfiguration; buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				INFOPLIST_FILE = Info.plist;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.clothingar.app;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				LD_RUNPATH_SEARCH_PATHS = ("$(inherited)","@executable_path/Frameworks");
+				INFOPLIST_KEY_NSCameraUsageDescription = "ClothingAR 需要使用相机";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "ClothingAR 需要使用麦克风";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "ClothingAR 需要保存视频";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UIStatusBarHidden = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+			};
+			name = Release; };
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		0000000000000000007A1202 /* BCL target */ = {isa = XCConfigurationList; buildConfigurations = (000000000000000000A7D8C3 /* Debug */,000000000000000000A7D8C4 /* Release */,); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
+		0000000000000000007A1201 /* BCL project */ = {isa = XCConfigurationList; buildConfigurations = (000000000000000000A7D8C1 /* Debug */,000000000000000000A7D8C2 /* Release */,); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
+/* End XCConfigurationList section */
+
+	};
+	rootObject = 000000000000000000895441 /* Project object */;
+}

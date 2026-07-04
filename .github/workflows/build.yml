@@ -1,0 +1,24 @@
+name: Build iOS IPA
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+jobs:
+  build:
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+      - run: sudo xcode-select -s /Applications/Xcode_15.4.app
+      - run: python3 gen_pbxproj.py
+      - run: |
+          xcodebuild archive             -project ClothingAR.xcodeproj             -scheme ClothingAR             -archivePath ClothingAR.xcarchive             -destination "generic/platform=iOS"             -allowProvisioningUpdates             CODE_SIGN_IDENTITY=""             CODE_SIGNING_REQUIRED=NO             CODE_SIGNING_ALLOWED=NO             CODE_SIGN_ENTITLEMENTS=""             PRODUCT_BUNDLE_IDENTIFIER=com.clothingar.app             IPHONEOS_DEPLOYMENT_TARGET=16.0
+      - run: |
+          mkdir -p Payload
+          cp -R ClothingAR.xcarchive/Products/Applications/ClothingAR.app Payload/
+          zip -r -y ClothingAR-unsigned.ipa Payload
+          rm -rf Payload
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ClothingAR-unsigned
+          path: ClothingAR-unsigned.ipa
+          retention-days: 7
