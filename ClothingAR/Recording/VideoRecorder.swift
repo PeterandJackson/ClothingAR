@@ -205,7 +205,7 @@ final class VideoRecorder {
     private func relativeTimestamp(_ absolute: CMTime) -> CMTime {
         guard let first = firstVideoTimestamp else { return absolute }
         let diff = CMTimeSubtract(absolute, first)
-        return CMTimeConvertScale(diff, timescale, .quickTime)
+        return CMTimeConvertScale(diff, timescale: timescale, method: .quickTime)
     }
 
     /// 将音频 sample buffer 的时间戳适配到统一 timescale
@@ -218,7 +218,7 @@ final class VideoRecorder {
         var newBuffer: CMSampleBuffer?
         let status = CMSampleBufferCreateCopyWithNewTiming(
             allocator: kCFAllocatorDefault,
-            originalSampleBuffer: buffer,
+            sampleBuffer: buffer,
             sampleTimingEntryCount: 1,
             sampleTimingArray: &timingInfo,
             sampleBufferOut: &newBuffer

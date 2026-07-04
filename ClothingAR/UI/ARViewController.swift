@@ -396,8 +396,8 @@ extension ARViewController: CameraManagerDelegate {
         DispatchQueue.main.async {
             let title = type == .camera ? "需要相机权限" : "需要麦克风权限"
             let msg = type == .camera
-                ? "请在"设置 > 隐私 > 相机"中允许 ClothingAR 使用相机"
-                : "请在"设置 > 隐私 > 麦克风"中允许 ClothingAR 使用麦克风"
+                ? "请在 [设置 > 隐私 > 相机] 中允许 ClothingAR 使用相机"
+                : "请在 [设置 > 隐私 > 麦克风] 中允许 ClothingAR 使用麦克风"
             let alert = UIAlertController(title: title, message: msg, preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "去设置", style: .default) { _ in
                 if let url = URL(string: UIApplication.openSettingsURLString) {

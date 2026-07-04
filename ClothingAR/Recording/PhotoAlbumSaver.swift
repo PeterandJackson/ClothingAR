@@ -34,7 +34,7 @@ final class PhotoAlbumSaver {
             }
 
         case .denied, .restricted:
-            completion(false, "相册写入权限已被拒绝。请在"设置"中开启权限。")
+            completion(false, "相册写入权限已被拒绝。请在[设置]中开启权限。")
 
         @unknown default:
             completion(false, "相册权限状态未知")
@@ -73,7 +73,7 @@ final class PhotoAlbumSaver {
         case .denied, .restricted:
             let alert = UIAlertController(
                 title: "需要相册权限",
-                message: "请在"设置 > 隐私 > 照片"中允许 ClothingAR 写入照片",
+                message: "请在 [设置 > 隐私 > 照片] 中允许 ClothingAR 写入照片",
                 preferredStyle: .alert
             )
             alert.addAction(UIAlertAction(title: "去设置", style: .default) { _ in

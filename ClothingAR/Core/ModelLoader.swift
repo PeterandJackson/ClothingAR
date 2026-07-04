@@ -1,6 +1,4 @@
 import SceneKit
-import ModelIO
-import MetalKit
 
 // MARK: - Bone Naming Lookup Table
 
@@ -93,47 +91,27 @@ final class ModelLoader {
     /// - Returns: ModelLoadResult，失败返回 nil
     static func load(named fileName: String = "THIN_WELD_DECIMATED_new",
                      extension ext: String = "scn") -> ModelLoadResult? {
-
         var loadedScene: SCNScene?
 
-        // ── 尝试加载：SCN > DAE > GLB ──
-        // SCN 是 SceneKit 原生格式，最快最可靠
-        // GLB 仅在构建时被 CI 转为 SCN，iOS 上作为 fallback（通过 MDLAsset）
-        if ext == "glb" || ext == "gltf" {
-            if let url = Bundle.main.url(forResource: fileName, withExtension: ext) {
-                loadedScene = loadGLBAsset(url: url)
+        let possibleNames: [(String, String)] = [
+            (fileName, "glb"),
+            (fileName, "dae"),
+            (fileName, "scn"),
+        ]
+
+        for (name, ex) in possibleNames {
+            if let url = Bundle.main.url(forResource: name, withExtension: ex) {
+                loadedScene = SCNScene(url: url, options: [
+                    .checkConsistency: true
+                ])
                 if loadedScene != nil {
-                    print("[ModelLoader] 成功加载 GLB: \(fileName).\(ext)")
-                }
-            }
-        }
-
-        // ── 尝试各种路径组合 ──
-        if loadedScene == nil {
-            let possibleNames: [(String, String)] = [
-                (fileName, "glb"),
-                (fileName, "dae"),
-                (fileName, "scn"),
-                ("FBX/\(fileName)", "fbx"),
-            ]
-
-            for (name, ex) in possibleNames {
-                if let url = Bundle.main.url(forResource: name, withExtension: ex) {
-                    loadedScene = SCNScene(url: url, options: [
-                        .checkConsistency: true,
-                        .flattenSceneHierarchy: false
-                    ])
-                    if loadedScene != nil {
-                        print("[ModelLoader] 成功加载: \(name).\(ex)")
-                        break
-                    }
-                }
-
-                if let scene = SCNScene(named: "\(name).\(ex)") {
-                    loadedScene = scene
-                    print("[ModelLoader] 成功加载(named): \(name).\(ex)")
+                    print("[ModelLoader] 成功加载: \(name).\(ex)")
                     break
                 }
+            }
+            if let scene = SCNScene(named: "\(fileName).\(ex)") {
+                loadedScene = scene
+                break
             }
         }
 
@@ -250,35 +228,6 @@ final class ModelLoader {
             triangleCount: totalTris,
             materialCount: materialNames.count
         )
-    }
-
-    // MARK: - GLB Loading
-
-    /// 使用 ModelIO 加载 glTF/GLB 并转换为 SCNScene
-    private static func loadGLBAsset(url: URL) -> SCNScene? {
-        // MDLAsset 加载 GLB
-        let asset = MDLAsset(url: url)
-        guard asset.count > 0 else {
-            print("[ModelLoader] MDLAsset 加载 GLB 返回空")
-            return nil
-        }
-
-        // 转换为 SCNScene
-        let scene = SCNScene(mdlAsset: asset)
-
-        // 打印骨骼信息
-        print("[ModelLoader] GLB loaded via ModelIO, root children: \(scene.rootNode.childNodes.count)")
-        for (i, child) in scene.rootNode.childNodes.enumerated() {
-            print("[ModelLoader]   child[\(i)]: \(child.name ?? "?") type: \(type(of: child))")
-            if let skinner = child.skinner {
-                print("[ModelLoader]     skinner bones: \(skinner.bones.count)")
-                for bone in skinner.bones.prefix(5) {
-                    print("[ModelLoader]       bone: \(bone.name ?? "?")")
-                }
-            }
-        }
-
-        return scene
     }
 
     // MARK: - Helpers
