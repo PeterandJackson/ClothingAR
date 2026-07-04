@@ -101,7 +101,7 @@ final class ModelLoader {
 
         for (name, ex) in possibleNames {
             if let url = Bundle.main.url(forResource: name, withExtension: ex) {
-                loadedScene = SCNScene(url: url, options: [
+                loadedScene = try? SCNScene(url: url, options: [
                     .checkConsistency: true
                 ])
                 if loadedScene != nil {
