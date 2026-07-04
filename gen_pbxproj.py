@@ -1,307 +1,98 @@
 #!/usr/bin/env python3
-"""Generate BiliLite.xcodeproj/project.pbxproj — strict OpenStep plist."""
-import sys
-
+"""Generate ClothingAR.xcodeproj"""
+import os
 FILES = [
-    ("BiliLiteApp.swift",           "App"),
-    ("APIResponse.swift",           "Models"),
-    ("Video.swift",                 "Models"),
-    ("VideoDetail.swift",           "Models"),
-    ("VideoStream.swift",           "Models"),
-    ("Comment.swift",               "Models"),
-    ("SearchResult.swift",          "Models"),
-    ("UserProfile.swift",           "Models"),
-    ("BiliAPIClient.swift",         "Services"),
-    ("WBISigner.swift",             "Services"),
-    ("DeviceIdentity.swift",        "Services"),
-    ("ImageCache.swift",            "Services"),
-    ("DanmakuParser.swift",         "Services"),
-    ("HomeViewModel.swift",         "ViewModels"),
-    ("VideoDetailViewModel.swift",  "ViewModels"),
-    ("PlayerViewModel.swift",       "ViewModels"),
-    ("SearchViewModel.swift",       "ViewModels"),
-    ("CommentViewModel.swift",      "ViewModels"),
-    ("LoginViewModel.swift",        "ViewModels"),
-    ("FavoritesViewModel.swift",    "ViewModels"),
-    ("LiveViewModel.swift",         "ViewModels"),
-    ("MainTabView.swift",           "Views"),
-    ("HomeView.swift",              "Views/Home"),
-    ("VideoCard.swift",             "Views/Home"),
-    ("VideoDetailView.swift",       "Views/Detail"),
-    ("CommentListView.swift",       "Views/Detail"),
-    ("VideoPlayerView.swift",       "Views/Player"),
-    ("PlayerOverlay.swift",         "Views/Player"),
-    ("DanmakuView.swift",           "Views/Player"),
-    ("SearchView.swift",            "Views/Search"),
-    ("LoginView.swift",             "Views"),
-    ("LiveView.swift",              "Views"),
-    ("CachedAsyncImage.swift",      "Views/Common"),
-    ("LoadingView.swift",           "Views/Common"),
-    ("ErrorBanner.swift",           "Views/Common"),
-    ("Constants.swift",             "Utils"),
-    ("ViewExtensions.swift",        "Utils"),
-    ("Info.plist",                  "Resources"),
-    ("Assets.xcassets",             "Resources"),
+    ('AppDelegate.swift','App'),('SceneDelegate.swift','App'),
+    ('CameraManager.swift','Core'),('BodyTracker.swift','Core'),('SkeletonMapper.swift','Core'),
+    ('PersonSegmentation.swift','Core'),('SceneRenderer.swift','Core'),('ModelLoader.swift','Core'),
+    ('ModelCalibration.swift','Core'),('VideoRecorder.swift','Recording'),('PhotoAlbumSaver.swift','Recording'),
+    ('ARViewController.swift','UI'),('RecordButton.swift','UI'),('StatusIndicator.swift','UI'),
+    ('PerformanceMonitor.swift','Performance'),('QualityManager.swift','Performance'),
+    ('Info.plist','Resources'),('Assets.xcassets','Resources'),
 ]
-
-def fid(n): return f"{n:024X}"
-
-BID  = {name: fid(1000001 + i) for i, (name, _) in enumerate(FILES)}
-FREF = {name: fid(2000001 + i) for i, (name, _) in enumerate(FILES)}
-PROD = fid(2999999)
-FWB  = fid(3000001)
-SRC  = fid(6000001)
-RES  = fid(7000001)
-TGT  = fid(5000001)
-PRJ  = fid(9000001)
-
-out = []
-def L(s=""): out.append(s)
-
-# HEADER
-L("// !$*UTF8*$!")
-L("{")
-L("\tarchiveVersion = 1;")
-L("\tclasses = {")
-L("\t};")
-L("\tobjectVersion = 56;")
-L("\tobjects = {")
-L("")
-
-# PBXBuildFile
-L("/* Begin PBXBuildFile section */")
-for name, _ in FILES:
-    if name == "Info.plist":
-        continue
-    r = FREF[name]
-    if name == "Assets.xcassets":
-        L(f"\t\t{BID[name]} /* {name} in Resources */ = {{isa = PBXBuildFile; fileRef = {r} /* {name} */; }};")
-    else:
-        L(f"\t\t{BID[name]} /* {name} in Sources */ = {{isa = PBXBuildFile; fileRef = {r} /* {name} */; }};")
-L("/* End PBXBuildFile section */")
-L("")
-
-# PBXFileReference
-L("/* Begin PBXFileReference section */")
-for name, _ in FILES:
-    r = FREF[name]
-    if name == "Assets.xcassets":
-        L(f"\t\t{r} /* {name} */ = {{isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = {name}; sourceTree = \"<group>\"; }};")
-    elif name == "Info.plist":
-        L(f"\t\t{r} /* {name} */ = {{isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = {name}; sourceTree = \"<group>\"; }};")
-    else:
-        L(f"\t\t{r} /* {name} */ = {{isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = {name}; sourceTree = \"<group>\"; }};")
-L(f"\t\t{PROD} /* BiliLite.app */ = {{isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BiliLite.app; sourceTree = BUILT_PRODUCTS_DIR; }};")
-L("/* End PBXFileReference section */")
-L("")
-
-# PBXFrameworksBuildPhase
-L("/* Begin PBXFrameworksBuildPhase section */")
-L(f"\t\t{FWB} /* Frameworks */ = {{")
-L("\t\t\tisa = PBXFrameworksBuildPhase;")
-L("\t\t\tbuildActionMask = 2147483647;")
-L("\t\t\tfiles = (")
-L("\t\t\t);")
-L("\t\t\trunOnlyForDeploymentPostprocessing = 0;")
-L("\t\t};")
-L("/* End PBXFrameworksBuildPhase section */")
-L("")
-
-# PBXGroup
-G = {}
-for k in ["ROOT","App","Models","Services","ViewModels","Views","Views/Home",
-           "Views/Detail","Views/Player","Views/Search","Views/Common","Utils","Resources","Products"]:
-    G[k] = fid(4000000 + len(G))
-
-def refs(grp):
-    return [FREF[n] for n, g in FILES if g == grp]
-
-def group(gid, ch, name="", path=""):
-    lbl = name or path or ""
-    L(f"\t\t{gid} /* {lbl} */ = {{")
-    L("\t\t\tisa = PBXGroup;")
-    L("\t\t\tchildren = (")
-    for c in ch:
-        L(f"\t\t\t\t{c},")
-    L("\t\t\t);")
-    if name:
-        L(f"\t\t\tname = {name};")
-    if path:
-        L(f"\t\t\tpath = {path};")
-    L("\t\t\tsourceTree = \"<group>\";")
-    L("\t\t};")
-
-L("/* Begin PBXGroup section */")
-for gn in ["App","Models","Services","ViewModels"]:
-    group(G[gn], refs(gn), path=gn)
-for gn in ["Views/Home","Views/Detail","Views/Player","Views/Search","Views/Common"]:
-    group(G[gn], refs(gn), path=gn.split("/")[-1])
-group(G["Views"], refs("Views") + [G["Views/Home"],G["Views/Detail"],G["Views/Player"],G["Views/Search"],G["Views/Common"]], name="Views", path="Views")
-group(G["Utils"], refs("Utils"), path="Utils")
-group(G["Resources"], [FREF["Info.plist"], FREF["Assets.xcassets"]], path="Resources")
-group(G["Products"], [PROD], name="Products")
-group(G["ROOT"], [G["App"],G["Models"],G["Services"],G["ViewModels"],G["Views"],G["Utils"],G["Resources"],G["Products"]])
-L("/* End PBXGroup section */")
-L("")
-
-# PBXNativeTarget
-L("/* Begin PBXNativeTarget section */")
-L(f"\t\t{TGT} /* BiliLite */ = {{")
-L("\t\t\tisa = PBXNativeTarget;")
-L(f"\t\t\tbuildConfigurationList = {fid(8000002)} /* Build configuration list for PBXNativeTarget */;")
-L("\t\t\tbuildPhases = (")
-L(f"\t\t\t\t{SRC} /* Sources */,")
-L(f"\t\t\t\t{FWB} /* Frameworks */,")
-L(f"\t\t\t\t{RES} /* Resources */,")
-L("\t\t\t);")
-L("\t\t\tbuildRules = (")
-L("\t\t\t);")
-L("\t\t\tdependencies = (")
-L("\t\t\t);")
-L("\t\t\tname = BiliLite;")
-L("\t\t\tproductName = BiliLite;")
-L(f"\t\t\tproductReference = {PROD} /* BiliLite.app */;")
-L("\t\t\tproductType = \"com.apple.product-type.application\";")
-L("\t\t};")
-L("/* End PBXNativeTarget section */")
-L("")
-
-# PBXProject
-L("/* Begin PBXProject section */")
-L(f"\t\t{PRJ} /* Project object */ = {{")
-L("\t\t\tisa = PBXProject;")
-L("\t\t\tattributes = {")
-L("\t\t\t\tBuildIndependentTargetsInParallel = 1;")
-L("\t\t\t\tLastSwiftUpdateCheck = 1520;")
-L("\t\t\t\tLastUpgradeCheck = 1520;")
-L("\t\t\t\tTargetAttributes = {")
-L(f"\t\t\t\t\t{TGT} = {{")
-L("\t\t\t\t\t\tCreatedOnToolsVersion = 15.2;")
-L("\t\t\t\t\t};")
-L("\t\t\t\t};")
-L("\t\t\t};")
-L(f"\t\t\tbuildConfigurationList = {fid(8000001)} /* BCL project */;")
-L("\t\t\tcompatibilityVersion = \"Xcode 14.0\";")
-L("\t\t\tdevelopmentRegion = \"zh-Hans\";")
-L("\t\t\thasScannedForEncodings = 0;")
-L("\t\t\tknownRegions = (")
-L("\t\t\t\ten,")
-L("\t\t\t\t\"zh-Hans\",")
-L("\t\t\t\tBase,")
-L("\t\t\t);")
-L(f"\t\t\tmainGroup = {G['ROOT']};")
-L(f"\t\t\tproductRefGroup = {G['Products']};")
-L("\t\t\tprojectDirPath = \"BiliLite\";")
-L("\t\t\tprojectRoot = \"\";")
-L("\t\t\ttargets = (")
-L(f"\t\t\t\t{TGT} /* BiliLite */,")
-L("\t\t\t);")
-L("\t\t};")
-L("/* End PBXProject section */")
-L("")
-
-# PBXResourcesBuildPhase
-L("/* Begin PBXResourcesBuildPhase section */")
-L(f"\t\t{RES} /* Resources */ = {{")
-L("\t\t\tisa = PBXResourcesBuildPhase;")
-L("\t\t\tbuildActionMask = 2147483647;")
-L("\t\t\tfiles = (")
-L(f"\t\t\t\t{BID['Assets.xcassets']} /* Assets.xcassets in Resources */,")
-L("\t\t\t);")
-L("\t\t\trunOnlyForDeploymentPostprocessing = 0;")
-L("\t\t};")
-L("/* End PBXResourcesBuildPhase section */")
-L("")
-
-# PBXSourcesBuildPhase
-L("/* Begin PBXSourcesBuildPhase section */")
-L(f"\t\t{SRC} /* Sources */ = {{")
-L("\t\t\tisa = PBXSourcesBuildPhase;")
-L("\t\t\tbuildActionMask = 2147483647;")
-L("\t\t\tfiles = (")
-for name, _ in FILES:
-    if name not in ("Assets.xcassets", "Info.plist"):
-        L(f"\t\t\t\t{BID[name]} /* {name} in Sources */,")
-L("\t\t\t);")
-L("\t\t\trunOnlyForDeploymentPostprocessing = 0;")
-L("\t\t};")
-L("/* End PBXSourcesBuildPhase section */")
-L("")
-
-# XCBuildConfiguration
-def cfg(cid, cfg_name, settings):
-    L(f"\t\t{cid} /* {cfg_name} */ = {{")
-    L("\t\t\tisa = XCBuildConfiguration;")
-    L("\t\t\tbuildSettings = {")
-    for s in settings:
-        L(f"\t\t\t\t{s}")
-    L("\t\t\t};")
-    L(f"\t\t\tname = {cfg_name};")
-    L("\t\t};")
-
-L("/* Begin XCBuildConfiguration section */")
-BASE = [
-    'ALWAYS_SEARCH_USER_PATHS = NO;',
-    'CLANG_ANALYZER_NONNULL = YES;',
-    'CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";',
-    'CLANG_ENABLE_MODULES = YES;',
-    'CLANG_ENABLE_OBJC_ARC = YES;',
-    'IPHONEOS_DEPLOYMENT_TARGET = 16.0;',
-    'SDKROOT = iphoneos;',
-    'SWIFT_VERSION = 5.0;',
-]
-cfg(fid(11000001), "Debug", BASE + [
-    'DEBUG_INFORMATION_FORMAT = dwarf;',
-    'GCC_OPTIMIZATION_LEVEL = 0;',
-    'ONLY_ACTIVE_ARCH = YES;',
-    'SWIFT_OPTIMIZATION_LEVEL = "-Onone";',
-])
-cfg(fid(11000002), "Release", BASE + [
-    'DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";',
-    'GCC_OPTIMIZATION_LEVEL = s;',
-    'SWIFT_OPTIMIZATION_LEVEL = "-O";',
-    'VALIDATE_PRODUCT = YES;',
-])
-TGT_BASE = [
-    'CODE_SIGN_STYLE = Automatic;',
-    'CURRENT_PROJECT_VERSION = 1;',
-    'INFOPLIST_FILE = Info.plist;',
-    'MARKETING_VERSION = 1.0;',
-    'PRODUCT_BUNDLE_IDENTIFIER = com.bililite.app;',
-    'PRODUCT_NAME = "$(TARGET_NAME)";',
-    'SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";',
-    'SWIFT_VERSION = 5.0;',
-    'TARGETED_DEVICE_FAMILY = 1;',
-    'LD_RUNPATH_SEARCH_PATHS = ("$(inherited)", "@executable_path/Frameworks");',
-]
-cfg(fid(11000003), "Debug", TGT_BASE)
-cfg(fid(11000004), "Release", TGT_BASE)
-L("/* End XCBuildConfiguration section */")
-L("")
-
-# XCConfigurationList
-L("/* Begin XCConfigurationList section */")
-for clid, lbl, dbg, rel in [
-    (fid(8000001), 'BCL project', fid(11000001), fid(11000002)),
-    (fid(8000002), 'BCL target',  fid(11000003), fid(11000004)),
-]:
-    L(f"\t\t{clid} /* {lbl} */ = {{")
-    L("\t\t\tisa = XCConfigurationList;")
-    L("\t\t\tbuildConfigurations = (")
-    L(f"\t\t\t\t{dbg} /* Debug */,")
-    L(f"\t\t\t\t{rel} /* Release */,")
-    L("\t\t\t);")
-    L("\t\t\tdefaultConfigurationIsVisible = 0;")
-    L("\t\t\tdefaultConfigurationName = Release;")
-    L("\t\t};")
-L("/* End XCConfigurationList section */")
-L("")
-
-# FOOTER
-L("\t};")
-L(f"\trootObject = {PRJ} /* Project object */;")
-L("}")
-
-with open("BiliLite.xcodeproj/project.pbxproj", "w", encoding="utf-8", newline="\n") as f:
-    f.write("\n".join(out) + "\n")
-print(f"OK: pbxproj — {len(out)} lines, {len(FILES)} files, projectDirPath=BiliLite")
+def fid(n): return f'{n:024X}'
+B={};FR={}
+for i,(n,_) in enumerate(FILES): B[n]=fid(1000001+i); FR[n]=fid(2000001+i)
+PR=fid(2999999); FW=fid(3000001); TGT=fid(5000001); PJ=fid(9000001)
+L=[]
+def a(s=''): L.append(s)
+a('// !$*UTF8*$!');a('{');a('\tarchiveVersion = 1;');a('\tclasses = {};')
+a('\tobjectVersion = 56;');a('\tobjects = {');a('')
+a('/* Begin PBXBuildFile section */')
+for n,_ in FILES:
+    if n=='Assets.xcassets': a(f'\t\t{B[n]} /* {n} in Resources */ = {{isa = PBXBuildFile; fileRef = {FR[n]} /* {n} */; }};')
+    elif n!='Info.plist': a(f'\t\t{B[n]} /* {n} in Sources */ = {{isa = PBXBuildFile; fileRef = {FR[n]} /* {n} */; }};')
+a('/* End PBXBuildFile section */');a('')
+a('/* Begin PBXFileReference section */')
+for n,_ in FILES:
+    if n=='Assets.xcassets': a(f'\t\t{FR[n]} /* {n} */ = {{isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = {n}; sourceTree = "<group>"; }};')
+    elif n=='Info.plist': a(f'\t\t{FR[n]} /* {n} */ = {{isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = {n}; sourceTree = "<group>"; }};')
+    else: a(f'\t\t{FR[n]} /* {n} */ = {{isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = {n}; sourceTree = "<group>"; }};')
+a(f'\t\t{PR} /* ClothingAR.app */ = {{isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ClothingAR.app; sourceTree = BUILT_PRODUCTS_DIR; }};')
+a('/* End PBXFileReference section */');a('')
+a('/* Begin PBXFrameworksBuildPhase section */')
+a(f'\t\t{FW} /* Frameworks */ = {{isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; }};')
+a('/* End PBXFrameworksBuildPhase section */');a('')
+G={}
+for k in ['ROOT','App','Core','Recording','UI','Performance','Resources','Products']: G[k]=fid(4000000+len(G))
+def grp(gid,refs,name='',path=''):
+    a(f'\t\t{gid} /* {name or path} */ = {{');a('\t\t\tisa = PBXGroup;');a('\t\t\tchildren = (')
+    for c in refs: a(f'\t\t\t\t{c},')
+    a('\t\t\t);')
+    if name: a(f'\t\t\tname = {name};')
+    if path: a(f'\t\t\tpath = {path};')
+    a('\t\t\tsourceTree = "<group>";');a('\t\t};')
+a('/* Begin PBXGroup section */')
+for gn in ['App','Core','Recording','UI','Performance']:
+    r=[FR[n] for n,g in FILES if g==gn]; grp(G[gn],r,path=gn)
+grp(G['Resources'],[FR['Info.plist'],FR['Assets.xcassets']],path='Resources')
+grp(G['Products'],[PR],name='Products')
+grp(G['ROOT'],[G[k] for k in ['App','Core','Recording','UI','Performance','Resources','Products']])
+a('/* End PBXGroup section */');a('')
+a('/* Begin PBXNativeTarget section */')
+a(f'\t\t{TGT} /* ClothingAR */ = {{');a('\t\t\tisa = PBXNativeTarget;')
+a(f'\t\t\tbuildConfigurationList = {fid(8000002)} /* BCL */;')
+a('\t\t\tbuildPhases = (');a(f'\t\t\t\t{fid(6000001)} /* Sources */,');a(f'\t\t\t\t{FW} /* Frameworks */,')
+a(f'\t\t\t\t{fid(7000001)} /* Resources */,');a('\t\t\t);');a('\t\t\tbuildRules = ();')
+a('\t\t\tdependencies = ();');a('\t\t\tname = ClothingAR;');a('\t\t\tproductName = ClothingAR;')
+a(f'\t\t\tproductReference = {PR};');a('\t\t\tproductType = "com.apple.product-type.application";');a('\t\t};')
+a('/* End PBXNativeTarget section */');a('')
+a('/* Begin PBXProject section */')
+a(f'\t\t{PJ} /* Project object */ = {{');a('\t\t\tisa = PBXProject;')
+a('\t\t\tattributes = {');a('\t\t\t\tBuildIndependentTargetsInParallel = 1;')
+a('\t\t\t\tLastSwiftUpdateCheck = 1520;');a('\t\t\t\tLastUpgradeCheck = 1520;')
+a('\t\t\t\tTargetAttributes = {');a(f'\t\t\t\t\t{TGT} = {{CreatedOnToolsVersion = 15.2; }};');a('\t\t\t\t};');a('\t\t\t};')
+a(f'\t\t\tbuildConfigurationList = {fid(8000001)};');a('\t\t\tcompatibilityVersion = "Xcode 14.0";')
+a('\t\t\tdevelopmentRegion = "zh-Hans";');a('\t\t\thasScannedForEncodings = 0;')
+a('\t\t\tknownRegions = (en, "zh-Hans", Base);');a(f'\t\t\tmainGroup = {G["ROOT"]};')
+a(f'\t\t\tproductRefGroup = {G["Products"]};');a('\t\t\tprojectDirPath = "ClothingAR";')
+a('\t\t\tprojectRoot = "";');a('\t\t\ttargets = (');a(f'\t\t\t\t{TGT} /* ClothingAR */,');a('\t\t\t);');a('\t\t};')
+a('/* End PBXProject section */');a('')
+a('/* Begin PBXResourcesBuildPhase section */')
+a(f'\t\t{fid(7000001)} /* Resources */ = {{isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = ({B["Assets.xcassets"]} /* Assets.xcassets in Resources */,); runOnlyForDeploymentPostprocessing = 0; }};')
+a('/* End PBXResourcesBuildPhase section */');a('')
+a('/* Begin PBXSourcesBuildPhase section */')
+a(f'\t\t{fid(6000001)} /* Sources */ = {{isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (')
+for n,_ in FILES:
+    if n not in ('Assets.xcassets','Info.plist'): a(f'\t\t\t\t{B[n]} /* {n} in Sources */,')
+a('\t\t\t); runOnlyForDeploymentPostprocessing = 0; }};')
+a('/* End PBXSourcesBuildPhase section */');a('')
+def cfg(cid,name_,settings):
+    a(f'\t\t{cid} /* {name_} */ = {{isa = XCBuildConfiguration; buildSettings = {{')
+    for s in settings: a(f'\t\t\t\t{s}')
+    a('\t\t\t};');a(f'\t\t\tname = {name_}; }};')
+a('/* Begin XCBuildConfiguration section */')
+base=['ALWAYS_SEARCH_USER_PATHS = NO;','CLANG_ANALYZER_NONNULL = YES;','CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";','CLANG_ENABLE_MODULES = YES;','CLANG_ENABLE_OBJC_ARC = YES;','IPHONEOS_DEPLOYMENT_TARGET = 16.0;','SDKROOT = iphoneos;']
+cfg(fid(11000001),'Debug',base+['DEBUG_INFORMATION_FORMAT = dwarf;','GCC_OPTIMIZATION_LEVEL = 0;','ONLY_ACTIVE_ARCH = YES;','SWIFT_OPTIMIZATION_LEVEL = "-Onone";'])
+cfg(fid(11000002),'Release',base+['DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";','GCC_OPTIMIZATION_LEVEL = s;','SWIFT_OPTIMIZATION_LEVEL = "-O";'])
+tgt=['CODE_SIGN_STYLE = Automatic;','CURRENT_PROJECT_VERSION = 1;','INFOPLIST_FILE = Info.plist;','MARKETING_VERSION = 1.0;','PRODUCT_BUNDLE_IDENTIFIER = com.clothingar.app;','PRODUCT_NAME = "$(TARGET_NAME)";','SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";','SWIFT_VERSION = 5.0;','TARGETED_DEVICE_FAMILY = 1;','LD_RUNPATH_SEARCH_PATHS = ("$(inherited)","@executable_path/Frameworks");','INFOPLIST_KEY_NSCameraUsageDescription = "ClothingAR 需要使用相机";','INFOPLIST_KEY_NSMicrophoneUsageDescription = "ClothingAR 需要使用麦克风";','INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "ClothingAR 需要保存视频";','INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;','INFOPLIST_KEY_UILaunchScreen_Generation = YES;','INFOPLIST_KEY_UIStatusBarHidden = YES;','INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;']
+cfg(fid(11000003),'Debug',tgt);cfg(fid(11000004),'Release',tgt)
+a('/* End XCBuildConfiguration section */');a('')
+a('/* Begin XCConfigurationList section */')
+a(f'\t\t{fid(8000002)} /* BCL target */ = {{isa = XCConfigurationList; buildConfigurations = ({fid(11000003)} /* Debug */,{fid(11000004)} /* Release */,); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; }};')
+a(f'\t\t{fid(8000001)} /* BCL project */ = {{isa = XCConfigurationList; buildConfigurations = ({fid(11000001)} /* Debug */,{fid(11000002)} /* Release */,); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; }};')
+a('/* End XCConfigurationList section */');a('')
+a('\t};');a(f'\trootObject = {PJ} /* Project object */;');a('}')
+os.makedirs('ClothingAR.xcodeproj',exist_ok=True)
+with open('ClothingAR.xcodeproj/project.pbxproj','w',encoding='utf-8',newline='\n') as f: f.write('\n'.join(L)+'\n')
+print('Done')
