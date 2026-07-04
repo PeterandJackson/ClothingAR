@@ -201,7 +201,7 @@
 				0000000000000000000F424E /* StatusIndicator.swift in Sources */,
 				0000000000000000000F424F /* PerformanceMonitor.swift in Sources */,
 				0000000000000000000F4250 /* QualityManager.swift in Sources */,
-			); runOnlyForDeploymentPostprocessing = 0; }};
+			); runOnlyForDeploymentPostprocessing = 0; };
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
@@ -218,7 +218,8 @@
 				ONLY_ACTIVE_ARCH = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
-			name = Debug; };
+			name = Debug;
+		};
 		000000000000000000A7D8C2 /* Release */ = {isa = XCBuildConfiguration; buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -231,7 +232,8 @@
 				GCC_OPTIMIZATION_LEVEL = s;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 			};
-			name = Release; };
+			name = Release;
+		};
 		000000000000000000A7D8C3 /* Debug */ = {isa = XCBuildConfiguration; buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -243,15 +245,16 @@
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 				LD_RUNPATH_SEARCH_PATHS = ("$(inherited)","@executable_path/Frameworks");
-				INFOPLIST_KEY_NSCameraUsageDescription = "ClothingAR 需要使用相机";
-				INFOPLIST_KEY_NSMicrophoneUsageDescription = "ClothingAR 需要使用麦克风";
-				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "ClothingAR 需要保存视频";
+				INFOPLIST_KEY_NSCameraUsageDescription = "ClothingAR needs camera";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "ClothingAR needs mic";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "ClothingAR needs album";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UIStatusBarHidden = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 			};
-			name = Debug; };
+			name = Debug;
+		};
 		000000000000000000A7D8C4 /* Release */ = {isa = XCBuildConfiguration; buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -263,15 +266,16 @@
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 				LD_RUNPATH_SEARCH_PATHS = ("$(inherited)","@executable_path/Frameworks");
-				INFOPLIST_KEY_NSCameraUsageDescription = "ClothingAR 需要使用相机";
-				INFOPLIST_KEY_NSMicrophoneUsageDescription = "ClothingAR 需要使用麦克风";
-				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "ClothingAR 需要保存视频";
+				INFOPLIST_KEY_NSCameraUsageDescription = "ClothingAR needs camera";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "ClothingAR needs mic";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "ClothingAR needs album";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UIStatusBarHidden = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 			};
-			name = Release; };
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
